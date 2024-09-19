@@ -1,6 +1,9 @@
 # Çok Dilli Blog Terminal Uygulaması
 
-[![Example Site](https://sahanhasret.com.tr/)]
+
+
+
+Example Site [Example Site](https://sahanhasret.com.tr/).
 
 <div align="center">
 
