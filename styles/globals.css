@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Ubuntu Mono', monospace;
+  background-color: #300A24; /* Ubuntu terminal arkaplan rengi */
+  color: #FFFFFF; /* Ubuntu terminal yazı rengi */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input {
+  background: transparent;
+  border: none;
+  color: #FFFFFF; /* Beyaz yazı rengi */
+  caret-color: #FFFFFF; /* Beyaz imleç rengi */
+  font-size: 1em;
+  line-height: 1.5;
+  padding: 0;
+}
+
+/* Terminal çıkışının genel stilini ayarla */
+.terminal-output {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Giriş alanını tamamen görünmez yap */
+input:focus {
+  outline: none;
+}
+
+/* Terminal başlık çubuğu stil ayarları */
+.terminal-header {
+  background-color: #3D3D3D; /* Ubuntu terminal başlık rengi */
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Butonlar için genel stil */
+.terminal-button {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Spesifik buton renkleri */
+.close-button {
+  background-color: #ED6A5E;
+}
+
+.minimize-button {
+  background-color: #F5BF4F;
+}
+
+.maximize-button {
+  background-color: #62C554;
+}
+
+/* Komut girişinin yeşil renkli metin */
+.command-input {
+  color: #4E9A06; /* Ubuntu terminal yeşil rengi */
+}
+
+/* Terminal içeriği için stil */
+.terminal-content {
+  background-color: #300A24;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 16px;
+}
+
+/* Komut çıktısı için stil */
+.command-output {
+  color: #FFFFFF;
+}
+
+/* Prompt stil */
+.prompt {
+  color: #4E9A06;
+}
+
+.system-info-bar {
+  background-color: #2C001E;
+  color: #FFFFFF;
+  padding: 4px 8px;
+  font-size: 0.9em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.system-info-item {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.system-info-icon {
+  margin-right: 4px;
+}
+.blog-title {
+  color: #4CAF50;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
+}
