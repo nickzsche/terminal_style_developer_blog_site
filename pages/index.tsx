@@ -390,6 +390,32 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
     return null;
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "url": "https://sahanhasret.com.tr",
+    "name": "Blog Terminal",
+    "description": "Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın.",
+    "author": {
+      "@type": "Person",
+      "name": "Şahan Hasret"
+    },
+    "blogPost": blogPosts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "datePublished": post.date,
+      "author": {
+        "@type": "Person",
+        "name": "Şahan Hasret"
+      },
+      "url": `https://sahanhasret.com.tr/blog/${post.slug}`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://sahanhasret.com.tr/blog/${post.slug}`
+      }
+    }))
+  };
+
   return (
     <>
       <Head>
@@ -399,60 +425,53 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         <meta property="og:title" content="Blog Terminal" />
         <meta property="og:description" content="Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourwebsite.com" />
-        <meta property="og:image" content="https://yourwebsite.com/og-image.jpg" />
+        <meta property="og:url" content="https://sahanhasret.com.tr" />
+        <meta property="og:image" content="https://sahanhasret.com.tr/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Blog Terminal" />
         <meta name="twitter:description" content="Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın." />
-        <meta name="twitter:image" content="https://yourwebsite.com/twitter-image.jpg" />
+        <meta name="twitter:image" content="https://sahanhasret.com.tr/twitter-image.jpg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
       <div className="min-h-screen bg-[#300A24] text-[#FFFFFF] font-mono text-sm flex flex-col">
-        <div className="terminal-header">
-          <div className="terminal-button close-button" onClick={handleCloseTerminal}></div>
-          <div className="terminal-button minimize-button"></div>
-          <div className="terminal-button maximize-button"></div>
-          <span className="ml-2">Blog Terminal</span>
-        </div>
-        <div ref={terminalContentRef} className="terminal-content flex-grow overflow-auto p-4 flex flex-col">
-          {selectedBlog ? (
-            <div>
-              <h1 className="text-2xl mb-4">{selectedBlog.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: selectedBlog.htmlContent }} />
-              <button 
-                onClick={() => setSelectedBlog(null)} 
-                className="mt-8 bg-transparent text-green-400 py-2 px-4 border border-green-400 rounded hover:bg-green-400 hover:text-[#300A24] transition-colors duration-200"
-              >
-                {translations[language].back}
-              </button>
+        {selectedBlog ? (
+          <div>
+            <h1 className="text-2xl mb-4">{selectedBlog.title}</h1>
+            <div dangerouslySetInnerHTML={{ __html: selectedBlog.htmlContent }} />
+            <button 
+              onClick={() => setSelectedBlog(null)} 
+              className="mt-8 bg-transparent text-green-400 py-2 px-4 border border-green-400 rounded hover:bg-green-400 hover:text-[#300A24] transition-colors duration-200"
+            >
+              {translations[language].back}
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="flex-grow">
+              {output.map((line, index) => (
+                <pre key={index} className={`terminal-output ${line.type === 'command' ? 'command-input' : line.type === 'blogTitle' ? 'blog-title' : 'command-output'}`}>
+                  {line.type === 'blogTitle' || line.type === 'contact' || line.type === 'social' ? (
+                    <a href={line.href} onClick={line.onClick} className="underline text-green-400 hover:text-green-300 cursor-pointer" target="_blank" rel="noopener noreferrer">
+                      {line.content}
+                    </a>
+                  ) : (
+                    line.content
+                  )}
+                </pre>
+              ))}
             </div>
-          ) : (
-            <>
-              <div className="flex-grow">
-                {output.map((line, index) => (
-                  <pre key={index} className={`terminal-output ${line.type === 'command' ? 'command-input' : line.type === 'blogTitle' ? 'blog-title' : 'command-output'}`}>
-                    {line.type === 'blogTitle' || line.type === 'contact' || line.type === 'social' ? (
-                      <a href={line.href} onClick={line.onClick} className="underline text-green-400 hover:text-green-300 cursor-pointer" target="_blank" rel="noopener noreferrer">
-                        {line.content}
-                      </a>
-                    ) : (
-                      line.content
-                    )}
-                  </pre>
-                ))}
-              </div>
-              <form onSubmit={handleSubmit} className="flex mt-2">
-                <span className="prompt">{`${USERNAME}@${HOSTNAME}:~$ `}</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  className="bg-transparent outline-none flex-grow text-white caret-white"
-                />
-              </form>
-            </>
-          )}
-        </div>
+            <form onSubmit={handleSubmit} className="flex mt-2">
+              <span className="prompt">{`${USERNAME}@${HOSTNAME}:~$ `}</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="bg-transparent outline-none flex-grow text-white caret-white"
+              />
+            </form>
+          </>
+        )}
       </div>
     </>
   );
