@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/router';
+
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
@@ -196,8 +196,13 @@ Udemy`,
   }
 };
 
-export default function Home({ blogPosts }) {
-  const router = useRouter();
+type BlogPost = {
+  title: string;
+  htmlContent: string;
+  // diğer gerekli alanları ekleyin
+};
+
+export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<OutputLine[]>([]);
   const [language, setLanguage] = useState<Language>('en');
