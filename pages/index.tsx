@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import Head from 'next/head';
 
 import fs from 'fs';
 import path from 'path';
@@ -164,7 +165,7 @@ Udemy`,
   lang [en|tr|es|ru] - Изменить язык
   contact - Показать контактную информацию
   social - Показать ссылки на социальные сети
-  blogs - Показать список досту��ных блогов
+  blogs - Показать список достуных блогов
   explorer - Показать случайный блог
   cat [blog-slug] - Прочитать запись блога в терминале
   search [запрос] - Поиск записей блога`,
@@ -390,54 +391,70 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#300A24] text-[#FFFFFF] font-mono text-sm flex flex-col">
-      <div className="terminal-header">
-        <div className="terminal-button close-button" onClick={handleCloseTerminal}></div>
-        <div className="terminal-button minimize-button"></div>
-        <div className="terminal-button maximize-button"></div>
-        <span className="ml-2">Blog Terminal</span>
-      </div>
-      <div ref={terminalContentRef} className="terminal-content flex-grow overflow-auto p-4 flex flex-col">
-        {selectedBlog ? (
-          <div>
-            <h1 className="text-2xl mb-4">{selectedBlog.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: selectedBlog.htmlContent }} />
-            <button 
-              onClick={() => setSelectedBlog(null)} 
-              className="mt-8 bg-transparent text-green-400 py-2 px-4 border border-green-400 rounded hover:bg-green-400 hover:text-[#300A24] transition-colors duration-200"
-            >
-              {translations[language].back}
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="flex-grow">
-              {output.map((line, index) => (
-                <pre key={index} className={`terminal-output ${line.type === 'command' ? 'command-input' : line.type === 'blogTitle' ? 'blog-title' : 'command-output'}`}>
-                  {line.type === 'blogTitle' || line.type === 'contact' || line.type === 'social' ? (
-                    <a href={line.href} onClick={line.onClick} className="underline text-green-400 hover:text-green-300 cursor-pointer" target="_blank" rel="noopener noreferrer">
-                      {line.content}
-                    </a>
-                  ) : (
-                    line.content
-                  )}
-                </pre>
-              ))}
+    <>
+      <Head>
+        <title>Blog Terminal</title>
+        <meta name="description" content="Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın." />
+        <meta name="keywords" content="blog, terminal, komutlar, yardım" />
+        <meta property="og:title" content="Blog Terminal" />
+        <meta property="og:description" content="Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://yourwebsite.com" />
+        <meta property="og:image" content="https://yourwebsite.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog Terminal" />
+        <meta name="twitter:description" content="Blog Terminaline hoş geldiniz! Kullanılabilir komutları görmek için 'help' yazın." />
+        <meta name="twitter:image" content="https://yourwebsite.com/twitter-image.jpg" />
+      </Head>
+      <div className="min-h-screen bg-[#300A24] text-[#FFFFFF] font-mono text-sm flex flex-col">
+        <div className="terminal-header">
+          <div className="terminal-button close-button" onClick={handleCloseTerminal}></div>
+          <div className="terminal-button minimize-button"></div>
+          <div className="terminal-button maximize-button"></div>
+          <span className="ml-2">Blog Terminal</span>
+        </div>
+        <div ref={terminalContentRef} className="terminal-content flex-grow overflow-auto p-4 flex flex-col">
+          {selectedBlog ? (
+            <div>
+              <h1 className="text-2xl mb-4">{selectedBlog.title}</h1>
+              <div dangerouslySetInnerHTML={{ __html: selectedBlog.htmlContent }} />
+              <button 
+                onClick={() => setSelectedBlog(null)} 
+                className="mt-8 bg-transparent text-green-400 py-2 px-4 border border-green-400 rounded hover:bg-green-400 hover:text-[#300A24] transition-colors duration-200"
+              >
+                {translations[language].back}
+              </button>
             </div>
-            <form onSubmit={handleSubmit} className="flex mt-2">
-              <span className="prompt">{`${USERNAME}@${HOSTNAME}:~$ `}</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="bg-transparent outline-none flex-grow text-white caret-white"
-              />
-            </form>
-          </>
-        )}
+          ) : (
+            <>
+              <div className="flex-grow">
+                {output.map((line, index) => (
+                  <pre key={index} className={`terminal-output ${line.type === 'command' ? 'command-input' : line.type === 'blogTitle' ? 'blog-title' : 'command-output'}`}>
+                    {line.type === 'blogTitle' || line.type === 'contact' || line.type === 'social' ? (
+                      <a href={line.href} onClick={line.onClick} className="underline text-green-400 hover:text-green-300 cursor-pointer" target="_blank" rel="noopener noreferrer">
+                        {line.content}
+                      </a>
+                    ) : (
+                      line.content
+                    )}
+                  </pre>
+                ))}
+              </div>
+              <form onSubmit={handleSubmit} className="flex mt-2">
+                <span className="prompt">{`${USERNAME}@${HOSTNAME}:~$ `}</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="bg-transparent outline-none flex-grow text-white caret-white"
+                />
+              </form>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
