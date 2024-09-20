@@ -302,10 +302,10 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         });
       case 'social':
         const socialLinks = {
-          LinkedIn: 'https://linkedin.com/in/sahanhasret',
-          Instagram: 'https://instagram.com/sahanhasret',
-          GitHub: 'https://github.com/sahanhasret',
-          Udemy: 'https://udemy.com/user/sahanhasret'
+          LinkedIn: 'https://linkedin.com/in/nickzsche',
+          Instagram: 'https://instagram.com/nickzsche',
+          GitHub: 'https://github.com/niczsche',
+          Udemy: 'https://www.udemy.com/user/sahan-hasret/'
         };
         return translations[language].social.split('\n').map(platform => ({
           type: 'social' as const,
