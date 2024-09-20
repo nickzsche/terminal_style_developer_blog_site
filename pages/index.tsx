@@ -164,7 +164,7 @@ Udemy`,
   lang [en|tr|es|ru] - Изменить язык
   contact - Показать контактную информацию
   social - Показать ссылки на социальные сети
-  blogs - Показать список доступных блогов
+  blogs - Показать список досту��ных блогов
   explorer - Показать случайный блог
   cat [blog-slug] - Прочитать запись блога в терминале
   search [запрос] - Поиск записей блога`,
@@ -197,9 +197,12 @@ Udemy`,
 };
 
 type BlogPost = {
+  slug: string;
   title: string;
+  content: string;
   htmlContent: string;
-  // diğer gerekli alanları ekleyin
+  lang: Language;
+  date: string;
 };
 
 export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
@@ -207,7 +210,9 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
   const [output, setOutput] = useState<OutputLine[]>([]);
   const [language, setLanguage] = useState<Language>('en');
   const [isTerminalOpen, setIsTerminalOpen] = useState(true);
-  const [selectedBlog, setSelectedBlog] = useState<any>(null);
+  const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
+
+
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalContentRef = useRef<HTMLDivElement>(null);
 
@@ -438,7 +443,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
 
 export async function getStaticProps() {
   const blogDir = path.join(process.cwd(), 'blogs');
-  let blogPosts: any[] = [];
+  let blogPosts: BlogPost[] = [];
 
   try {
     const filenames = fs.readdirSync(blogDir);
@@ -460,7 +465,7 @@ export async function getStaticProps() {
         title: data.title || 'Untitled',
         content: plainTextContent,
         htmlContent: htmlContent,
-        lang: data.lang || 'en',
+        lang: (data.lang || 'en') as Language,
         date: data.date,
       };
     });
