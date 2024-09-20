@@ -304,7 +304,7 @@ export default function Home({ blogPosts }: { blogPosts: BlogPost[] }) {
         const socialLinks = {
           LinkedIn: 'https://linkedin.com/in/nickzsche',
           Instagram: 'https://instagram.com/nickzsche',
-          GitHub: 'https://github.com/niczsche',
+          GitHub: 'https://github.com/nickzsche',
           Udemy: 'https://www.udemy.com/user/sahan-hasret/'
         };
         return translations[language].social.split('\n').map(platform => ({
